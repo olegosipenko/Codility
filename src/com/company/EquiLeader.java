@@ -32,7 +32,7 @@ public class EquiLeader {
         return equiLeaders;
     }
 
-    private static int getLeader(int[] A) {
+    public static int getLeader(int[] A) {
         int size = 0;
         int value = 0;
         for (int i : A) {
