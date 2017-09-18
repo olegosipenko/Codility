@@ -26,7 +26,7 @@ public class MaxDoubleSliceSum {
     private static int solution(int[] A) {
         if (A.length == 3) return 0;
 
-        int maxSum = MaxSlice.sum(A);
+        int maxSum = MaxSliceSum.sum(A);
         if (maxSum == 0) return 0;
 
         int left = 0;
