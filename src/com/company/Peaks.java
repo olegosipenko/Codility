@@ -17,7 +17,7 @@ public class Peaks {
     private static int solution(int[] A) {
         ArrayList<Integer> peaks = new ArrayList<>();
         for (int i = 1; i < A.length - 1; i++) {
-            if (A[i] > A[i - 1] && A[i] > A[i + 1]) {
+            if (isPeak(A, i)) {
                 peaks.add(i);
             }
         }
@@ -29,24 +29,37 @@ public class Peaks {
                 return 1;
             } else {
                 int answer = 0;
-                boolean hasPeakInEveryBlock = true;
-                for (int j = 2; j < peaks.size(); j++) {
-                    if (A.length % j != 0) continue;
-                    answer = j;
-                    int step = A.length / j;
-                    for (int i = 0; i < peaks.size(); i++) {
-                        if (i * step <= peaks.get(i) && peaks.get(i) <= i * step + step) {
-                            break;
-                        } else {
+
+                for (int i = 1; i <= peaks.size(); i++) {
+                    boolean hasPeakInEveryBlock = true;
+                    if (A.length % i != 0) continue;
+                    int blockSize = A.length / i;
+                    System.out.println(i + " blocksize= " + blockSize);
+                    for (int j = 0; j < i; j++) {
+                        System.out.println("    peak= " + peaks.get(j));
+                        System.out.println("    blockStart= " + (blockSize * j) + " blockEnd= " + (blockSize * j + blockSize));
+                        boolean inBlock = peakInBlock(peaks.get(j), blockSize * j, blockSize * j + blockSize);
+                        System.out.println("    " + inBlock);
+                        if (!inBlock) {
                             hasPeakInEveryBlock = false;
                         }
+                        System.out.println("    " + hasPeakInEveryBlock);
                     }
                     if (hasPeakInEveryBlock) {
-                        answer++;
+                        answer = i;
                     }
+                    System.out.println(i + " answer= " + answer);
                 }
-                return answer == 0 ? peaks.size() : answer;
+                return answer;
             }
         }
+    }
+
+    private static final boolean peakInBlock(int peakPosition, int blockStart, int blockEnd) {
+        return blockStart <= peakPosition && peakPosition <= blockEnd;
+    }
+
+    private static final boolean isPeak(int[] A, int i) {
+        return A[i] > A[i - 1] && A[i] > A[i + 1];
     }
 }
