@@ -30,25 +30,20 @@ public class Peaks {
             } else {
                 int answer = 0;
 
-                for (int i = 1; i <= peaks.size(); i++) {
+                for (int i = peaks.size(); i >= 1; i--) {
                     boolean hasPeakInEveryBlock = true;
                     if (A.length % i != 0) continue;
                     int blockSize = A.length / i;
-                    System.out.println(i + " blocksize= " + blockSize);
                     for (int j = 0; j < i; j++) {
-                        System.out.println("    peak= " + peaks.get(j));
-                        System.out.println("    blockStart= " + (blockSize * j) + " blockEnd= " + (blockSize * j + blockSize));
                         boolean inBlock = peakInBlock(peaks.get(j), blockSize * j, blockSize * j + blockSize);
-                        System.out.println("    " + inBlock);
                         if (!inBlock) {
                             hasPeakInEveryBlock = false;
                         }
-                        System.out.println("    " + hasPeakInEveryBlock);
                     }
                     if (hasPeakInEveryBlock) {
                         answer = i;
+                        break;
                     }
-                    System.out.println(i + " answer= " + answer);
                 }
                 return answer;
             }
