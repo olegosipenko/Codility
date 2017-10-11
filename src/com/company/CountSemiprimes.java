@@ -46,10 +46,10 @@ public class CountSemiprimes {
     }
 
     private static boolean isSemiPrime(int[] semiPrimes, int k) {
-        return semiPrimes[k] == 0 && getFactors(k) == 2;
+        return semiPrimes[k] == 0 && countFactors(k) == 2;
     }
 
-    private static int getFactors(int x) {
+    private static int countFactors(int x) {
         int n = x;
         int factors = 0;
         for (int i = 2; i <= n; i++) {
