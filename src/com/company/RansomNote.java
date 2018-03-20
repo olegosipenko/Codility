@@ -1,6 +1,7 @@
 package com.company;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A kidnapper wrote a ransom note but is worried it will be traced back to him. He found a magazine and wants to know if he can cut out whole words from it and use them to create an untraceable replica of his ransom note. The words in his note are case-sensitive and he must use whole words available in the magazine, meaning he cannot use substrings or concatenation to create the words he needs.
@@ -57,24 +58,25 @@ public class RansomNote {
     private static String isReplica(int m, int n, String[] magazine, String[] ransom) {
         if (n > m) return NO;
 
-        if (checkTheDictionary(ransom, fillTheDictionary(magazine))) return NO;
-        return YES;
+        return enoughDictionary(buildDictionary(magazine), buildDictionary(ransom)) ? YES : NO;
     }
 
-    private static boolean checkTheDictionary(String[] ransom, HashMap<String, Integer> magazineDictionary) {
-        for (String word : ransom) {
-            int value = magazineDictionary.computeIfPresent(word, (s, integer) -> integer - 1);
-            if (value == -1) return true;
+    private static HashMap<String, Integer> buildDictionary(String[] strings) {
+        HashMap<String, Integer> words = new HashMap<>();
+        for (String word : strings) {
+            words.putIfAbsent(word, 0);
+            words.computeIfPresent(word, (w, i) -> i + 1);
         }
-        return false;
+        return words;
     }
 
-    private static HashMap<String, Integer> fillTheDictionary(String[] magazine) {
-        HashMap<String, Integer> magazineDictionary = new HashMap<>();
-        for (String word : magazine) {
-            magazineDictionary.computeIfPresent(word, (s, integer) -> integer++);
-            magazineDictionary.putIfAbsent(word, 1);
+    private static boolean enoughDictionary(HashMap<String, Integer> dic1, HashMap<String, Integer> dic2) {
+        if (dic2.size() > dic1.size()) return false;
+        for (Map.Entry<String, Integer> entry: dic2.entrySet()) {
+            if (!dic1.containsKey(entry.getKey()) || dic1.get(entry.getKey()) < entry.getValue()) {
+                return false;
+            }
         }
-        return magazineDictionary;
+        return true;
     }
 }
